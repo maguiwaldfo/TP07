@@ -1,0 +1,36 @@
+@using TP07.Models
+@model Publicacion
+
+@{
+    ViewData["Title"] = "Crear publicación";
+}
+
+<h1>Crear publicación</h1>
+
+<form action='@Url.Action("Crear", "Publicacion")' method="post">
+
+    <div>
+        <label>Título</label>
+        <input type="text" name="Titulo">
+    </div>
+
+    <div>
+        <label>Descripción</label>
+        <textarea name="Descripcion"></textarea>
+    </div>
+
+    <div>
+        <label>Imagen</label>
+        <input type="text" name="Imagen">
+    </div>
+
+    <button type="submit">Publicar</button>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <p>@ViewBag.Error</p>
+}
+
+<a href='@Url.Action("Index", "Home")'>Volver al inicio</a>

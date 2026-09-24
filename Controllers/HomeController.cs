@@ -15,7 +15,16 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        if (HttpContext.Session.GetInt32("Id") == null)
+        {
+            return RedirectToAction("Login", "Usuario");
+        }
+
+        BD bd = new BD();
+
+        List<Publicacion> publicaciones = bd.ObtenerPublicaciones();
+
+        return View(publicaciones);
     }
 
     public IActionResult Privacy()

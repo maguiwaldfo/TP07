@@ -1,9 +1,11 @@
-namespace TP07.Models;
-
-public class Usuario
+namespace TP07.Models
 {
-    public string Nombre { get; set; }
-    public string Servidor { get; set; }
-    public string Usuario { get; set; }
-    public string Clave { get; set; }
+    public class Usuario
+    {
+        public int Id { get; set; }
+        public string NombreUsuario { get; set; }
+        public string Contraseña { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+    }
 }

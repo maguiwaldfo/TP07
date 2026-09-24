@@ -1,0 +1,41 @@
+@using TP07.Models
+@model Usuario
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<h1>Registrarse</h1>
+
+<form action='@Url.Action("Registro", "Usuario")' method="post">
+
+    <div>
+        <label>Nombre de usuario</label>
+        <input type="text" name="NombreUsuario">
+    </div>
+
+    <div>
+        <label>Contraseña</label>
+        <input type="password" name="Contraseña">
+    </div>
+
+    <div>
+        <label>Nombre</label>
+        <input type="text" name="Nombre">
+    </div>
+
+    <div>
+        <label>Apellido</label>
+        <input type="text" name="Apellido">
+    </div>
+
+    <button type="submit">Registrarse</button>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <p>@ViewBag.Error</p>
+}
+
+<a href='@Url.Action("Login", "Usuario")'>Ya tengo una cuenta</a>
