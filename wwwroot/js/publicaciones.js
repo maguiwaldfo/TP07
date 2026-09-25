@@ -10,3 +10,25 @@ function MeGusta(idPublicacion)
         document.getElementById('cantidad-' + idPublicacion).innerHTML = cantidad;
     });
 }
+function Comentar(idPublicacion)
+{
+    let input = document.getElementById('texto-' + idPublicacion);
+    let texto = input.value;
+
+    if (texto == '')
+    {
+        return;
+    }
+
+    fetch('/Publicacion/Comentar?idPublicacion=' + idPublicacion + '&texto=' + encodeURIComponent(texto),
+    {
+        method: 'POST'
+    })
+    .then(response =>
+    {
+        if (response.ok)
+        {
+            location.reload();
+        }
+    });
+}

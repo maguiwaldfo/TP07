@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Dapper;
@@ -112,8 +113,50 @@ public List<Publicacion> ObtenerPublicaciones()
                         ON Publicaciones.IdUsuario = Usuarios.Id
                         ORDER BY Publicaciones.FechaPublicacion DESC";
 
-        return connection.Query<Publicacion>(query).ToList();
+        List<Publicacion> publicaciones = connection.Query<Publicacion>(query).ToList();
+
+        foreach (Publicacion publicacion in publicaciones)
+        {
+            publicacion.Imagen = ResolverRutaImagen(publicacion.Imagen);
+        }
+
+        return publicaciones;
     }
+}
+
+private static string ResolverRutaImagen(string imagen)
+{
+    if (string.IsNullOrWhiteSpace(imagen))
+    {
+        return imagen;
+    }
+
+    string[] candidatos = new[]
+    {
+        imagen,
+        imagen.Replace(".jpg", ".jpeg", StringComparison.OrdinalIgnoreCase),
+        imagen.Replace(".jpeg", ".jpg", StringComparison.OrdinalIgnoreCase),
+        imagen.Replace(".jpg", ".png", StringComparison.OrdinalIgnoreCase),
+        imagen.Replace(".jpeg", ".png", StringComparison.OrdinalIgnoreCase)
+    };
+
+    string directorio = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "wwwroot", "imagenes"));
+
+    foreach (string candidato in candidatos.Distinct())
+    {
+        if (string.IsNullOrWhiteSpace(candidato))
+        {
+            continue;
+        }
+
+        string rutaCompleta = Path.Combine(directorio, candidato);
+        if (File.Exists(rutaCompleta))
+        {
+            return candidato;
+        }
+    }
+
+    return imagen;
 }
 public bool TieneMeGusta(int idPublicacion, int idUsuario)
 {
@@ -191,6 +234,43 @@ public int CantidadMeGusta(int idPublicacion)
             query,
             new { IdPublicacion = idPublicacion }
         );
+    }
+}
+public List<Comentario> ObtenerComentarios(int idPublicacion)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"SELECT 
+                        Comentarios.Id,
+                        Comentarios.IdPublicacion,
+                        Comentarios.IdUsuarioComenta,
+                        Comentarios.Texto,
+                        Comentarios.FechaComentario,
+                        Usuarios.NombreUsuario
+                        FROM Comentarios
+                        INNER JOIN Usuarios
+                        ON Comentarios.IdUsuarioComenta = Usuarios.Id
+                        WHERE Comentarios.IdPublicacion = @IdPublicacion
+                        ORDER BY Comentarios.FechaComentario ASC";
+
+        return connection.Query<Comentario>(
+            query,
+            new { IdPublicacion = idPublicacion }
+        ).ToList();
+    }
+}
+
+
+public void AgregarComentario(Comentario comentario)
+{
+    using (SqlConnection connection = new SqlConnection(_connectionString))
+    {
+        string query = @"INSERT INTO Comentarios
+                        (IdPublicacion, IdUsuarioComenta, Texto, FechaComentario)
+                        VALUES
+                        (@IdPublicacion, @IdUsuarioComenta, @Texto, @FechaComentario)";
+
+        connection.Execute(query, comentario);
     }
 }
 

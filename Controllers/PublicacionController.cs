@@ -66,6 +66,33 @@ public IActionResult MeGusta(int idPublicacion)
 
     return Ok(cantidad);
 }
+[HttpPost]
+public IActionResult Comentar(int idPublicacion, string texto)
+{
+    if (HttpContext.Session.GetInt32("Id") == null)
+    {
+        return BadRequest();
+    }
 
+    if (texto == null || texto == "")
+    {
+        return BadRequest();
+    }
+
+    int idUsuario = HttpContext.Session.GetInt32("Id").Value;
+
+    Comentario comentario = new Comentario();
+
+    comentario.IdPublicacion = idPublicacion;
+    comentario.IdUsuarioComenta = idUsuario;
+    comentario.Texto = texto;
+    comentario.FechaComentario = DateTime.Now;
+
+    BD bd = new BD();
+
+    bd.AgregarComentario(comentario);
+
+    return Ok();
+}
 
 }

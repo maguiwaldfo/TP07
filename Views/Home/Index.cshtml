@@ -7,7 +7,7 @@
 
 <h1>Publicaciones</h1>
 
-<a href='@Url.Action("Crear", "Publicacion")'>Crear publicación</a>
+<a class="btn-crear" href='@Url.Action("Crear", "Publicacion")'>Crear publicación</a>
 
 @if (Model.Count == 0)
 {
@@ -17,28 +17,56 @@ else
 {
     @foreach (Publicacion publicacion in Model)
     {
-        <div class="publicacion">
+        <article class="publicacion">
+            <div class="publicacion-header">
+                <div class="publicacion-user">
+                    <div class="avatar">@publicacion.NombreUsuario.Substring(0, 1).ToUpper()</div>
+                    <div>
+                        <h2>@publicacion.NombreUsuario</h2>
+                        <small>@publicacion.FechaPublicacion.ToString("dd MMM yyyy")</small>
+                    </div>
+                </div>
+                <span class="text-muted">@publicacion.Titulo</span>
+            </div>
 
-            <h2>@publicacion.Titulo</h2>
-
-            @if (publicacion.Imagen != null && publicacion.Imagen != "")
+            @if (!string.IsNullOrWhiteSpace(publicacion.Imagen))
             {
-                <img src="@publicacion.Imagen" alt="Imagen de la publicación">
+                <img class="post-image" src="@Url.Content("~/imagenes/" + publicacion.Imagen)" alt="Imagen de la publicación" />
             }
 
-            <p>@publicacion.Descripcion</p>
+            <div class="publicacion-body">
+                <div class="post-actions">
+                    <button type="button" onclick="MeGusta(@publicacion.Id)">♡ Me gusta</button>
+                </div>
 
-            <p>Publicado por: @publicacion.NombreUsuario</p>
+                <span class="like-count">
+                    <span id="cantidad-@publicacion.Id">@publicacion.CantidadMeGusta</span> me gusta
+                </span>
 
-            <p>Fecha: @publicacion.FechaPublicacion</p>
+                <p><strong>@publicacion.NombreUsuario</strong> <span class="descripcion">@publicacion.Descripcion</span></p>
+            </div>
 
-            <p>
-                Me gusta: @publicacion.CantidadMeGusta
-            </p>
+            <div class="comentarios">
+                <h3>Comentarios</h3>
 
-            <button>Me gusta</button>
+                @if (publicacion.Comentarios != null)
+                {
+                    @foreach (Comentario comentario in publicacion.Comentarios)
+                    {
+                        <div class="comentario">
+                            <strong>@comentario.NombreUsuario:</strong>
+                            @comentario.Texto
+                        </div>
+                    }
+                }
+            </div>
 
-        </div>
+            <div class="comentario-box">
+                <input type="text" id="texto-@publicacion.Id" placeholder="Agrega un comentario...">
+                <button type="button" onclick="Comentar(@publicacion.Id)">Publicar</button>
+            </div>
+        </article>
     }
-<script src="~/js/publicaciones.js"></script>
 }
+
+<script src="~/js/publicaciones.js"></script>

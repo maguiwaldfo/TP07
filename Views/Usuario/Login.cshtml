@@ -2,30 +2,33 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Iniciar sesión</h1>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-brand">InstaRed</div>
+        <h1>Iniciar sesión</h1>
 
-<form action='@Url.Action("Login", "Usuario")' method="post">
+        <form class="auth-form" action='@Url.Action("Login", "Usuario")' method="post">
+            <div class="campo-form">
+                <label for="NombreUsuario">Nombre de usuario</label>
+                <input id="NombreUsuario" type="text" name="NombreUsuario" placeholder="usuario123" required>
+            </div>
 
-    <div>
-        <label>Nombre de usuario</label>
-        <input type="text" name="NombreUsuario">
+            <div class="campo-form">
+                <label for="Contraseña">Contraseña</label>
+                <input id="Contraseña" type="password" name="Contraseña" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn-auth">Ingresar</button>
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alerta-error">@ViewBag.Error</div>
+        }
+
+        <p class="auth-link">
+            ¿No tenés cuenta?
+            <a href='@Url.Action("Registro", "Usuario")'>Registrarse</a>
+        </p>
     </div>
-
-    <div>
-        <label>Contraseña</label>
-        <input type="password" name="Contraseña">
-    </div>
-
-    <button type="submit">Ingresar</button>
-
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p>@ViewBag.Error</p>
-}
-
-<p>
-    ¿No tenés cuenta?
-    <a href='@Url.Action("Registro", "Usuario")'>Registrarse</a>
-</p>
+</div>

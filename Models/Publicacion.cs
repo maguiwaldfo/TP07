@@ -11,5 +11,6 @@ namespace TP07.Models
 
         public string NombreUsuario { get; set; }
         public int CantidadMeGusta { get; set; }
+        public List<Comentario> Comentarios { get; set; }
     }
 }

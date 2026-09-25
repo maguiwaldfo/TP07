@@ -5,32 +5,36 @@
     ViewData["Title"] = "Crear publicación";
 }
 
-<h1>Crear publicación</h1>
+<div class="crear-publicacion-wrap">
+    <div class="crear-publicacion-card">
+        <h1>Crear publicación</h1>
 
-<form action='@Url.Action("Crear", "Publicacion")' method="post">
+        <form class="crear-form" action='@Url.Action("Crear", "Publicacion")' method="post">
 
-    <div>
-        <label>Título</label>
-        <input type="text" name="Titulo">
+            <div class="campo-form">
+                <label for="Titulo">Título</label>
+                <input id="Titulo" type="text" name="Titulo" placeholder="Ej: Mi viaje a Bariloche" required>
+            </div>
+
+            <div class="campo-form">
+                <label for="Descripcion">Descripción</label>
+                <textarea id="Descripcion" name="Descripcion" rows="5" placeholder="Contale a tu comunidad qué estás compartiendo..." required></textarea>
+            </div>
+
+            <div class="campo-form">
+                <label for="Imagen">Nombre de la imagen</label>
+                <input id="Imagen" type="text" name="Imagen" placeholder="Ej: recital.jpg">
+            </div>
+
+            <div class="acciones-form">
+                <button type="submit" class="btn-publicar">Publicar</button>
+                <a class="btn-volver" href='@Url.Action("Index", "Home")'>Volver al inicio</a>
+            </div>
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alerta-error">@ViewBag.Error</div>
+        }
     </div>
-
-    <div>
-        <label>Descripción</label>
-        <textarea name="Descripcion"></textarea>
-    </div>
-
-    <div>
-        <label>Imagen</label>
-        <input type="text" name="Imagen">
-    </div>
-
-    <button type="submit">Publicar</button>
-
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p>@ViewBag.Error</p>
-}
-
-<a href='@Url.Action("Index", "Home")'>Volver al inicio</a>
+</div>

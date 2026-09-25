@@ -5,37 +5,42 @@
     ViewData["Title"] = "Registro";
 }
 
-<h1>Registrarse</h1>
+<div class="auth-wrap">
+    <div class="auth-card">
+        <div class="auth-brand">InstaRed</div>
+        <h1>Registrarse</h1>
 
-<form action='@Url.Action("Registro", "Usuario")' method="post">
+        <form class="auth-form" action='@Url.Action("Registro", "Usuario")' method="post">
+            <div class="campo-form">
+                <label for="NombreUsuario">Nombre de usuario</label>
+                <input id="NombreUsuario" type="text" name="NombreUsuario" placeholder="usuario123" required>
+            </div>
 
-    <div>
-        <label>Nombre de usuario</label>
-        <input type="text" name="NombreUsuario">
+            <div class="campo-form">
+                <label for="Contraseña">Contraseña</label>
+                <input id="Contraseña" type="password" name="Contraseña" placeholder="••••••••" required>
+            </div>
+
+            <div class="campo-form">
+                <label for="Nombre">Nombre</label>
+                <input id="Nombre" type="text" name="Nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="campo-form">
+                <label for="Apellido">Apellido</label>
+                <input id="Apellido" type="text" name="Apellido" placeholder="Tu apellido" required>
+            </div>
+
+            <button type="submit" class="btn-auth">Registrarse</button>
+        </form>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alerta-error">@ViewBag.Error</div>
+        }
+
+        <p class="auth-link">
+            <a href='@Url.Action("Login", "Usuario")'>Ya tengo una cuenta</a>
+        </p>
     </div>
-
-    <div>
-        <label>Contraseña</label>
-        <input type="password" name="Contraseña">
-    </div>
-
-    <div>
-        <label>Nombre</label>
-        <input type="text" name="Nombre">
-    </div>
-
-    <div>
-        <label>Apellido</label>
-        <input type="text" name="Apellido">
-    </div>
-
-    <button type="submit">Registrarse</button>
-
-</form>
-
-@if (ViewBag.Error != null)
-{
-    <p>@ViewBag.Error</p>
-}
-
-<a href='@Url.Action("Login", "Usuario")'>Ya tengo una cuenta</a>
+</div>

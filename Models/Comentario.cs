@@ -7,5 +7,7 @@ namespace TP07.Models
         public int IdUsuarioComenta { get; set; }
         public string Texto { get; set; }
         public DateTime FechaComentario { get; set; }
+
+        public string NombreUsuario { get; set; }
     }
 }

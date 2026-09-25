@@ -23,6 +23,13 @@ public class HomeController : Controller
         BD bd = new BD();
 
         List<Publicacion> publicaciones = bd.ObtenerPublicaciones();
+        foreach (Publicacion publicacion in publicaciones)
+        { 
+            
+        publicacion.Comentarios = bd.ObtenerComentarios(publicacion.Id);
+        
+        }
+
 
         return View(publicaciones);
     }
